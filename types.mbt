@@ -91,6 +91,17 @@ pub(all) enum DisplayClass {
 } derive(Eq, Debug)
 
 ///|
+/// Catalog family for a known display timing.
+pub(all) enum TimingFamily {
+  EstablishedFamily
+  DmtFamily
+  CtaFamily
+  CvtFamily
+  RbFamily
+  ProjectorFamily
+} derive(Eq, Debug)
+
+///|
 /// Parse error returned when an EDID input cannot produce a base block.
 pub(all) struct EdidError {
   code : DiagnosticCode
@@ -216,6 +227,20 @@ pub(all) struct DisplayMode {
 } derive(Eq, Debug)
 
 ///|
+/// Known timing entry used for matching and reporting.
+pub(all) struct TimingCatalogEntry {
+  id : String
+  family : TimingFamily
+  width : Int
+  height : Int
+  refresh_millihz : Int
+  pixel_clock_khz : Int
+  progressive : Bool
+  aspect : String
+  name : String
+} derive(Eq, Debug)
+
+///|
 /// Range limits descriptor decoded from tag `0xFD`.
 pub(all) struct RangeLimits {
   min_vertical_hz : Int
@@ -290,6 +315,18 @@ pub(all) struct EdidAudit {
   summary : AuditSummary
   preferred_mode : DisplayMode?
   display_class : DisplayClass
+} derive(Eq, Debug)
+
+///|
+/// One profile matrix row.
+pub(all) struct ProfileCheck {
+  profile_name : String
+  status : AuditStatus
+  score : Int
+  minimum_mode_met : Bool
+  preferred_timing_met : Bool
+  interlaced_policy_met : Bool
+  extension_policy_met : Bool
 } derive(Eq, Debug)
 
 ///|
@@ -393,6 +430,38 @@ pub fn DisplayClass::name(self : DisplayClass) -> String {
 }
 
 ///|
+pub fn TimingFamily::name(self : TimingFamily) -> String {
+  match self {
+    EstablishedFamily => "established"
+    DmtFamily => "dmt"
+    CtaFamily => "cta"
+    CvtFamily => "cvt"
+    RbFamily => "reduced-blanking"
+    ProjectorFamily => "projector"
+  }
+}
+
+///|
+pub fn TimingCatalogEntry::label(self : TimingCatalogEntry) -> String {
+  self.width.to_string() +
+  "x" +
+  self.height.to_string() +
+  "@" +
+  ((self.refresh_millihz + 500) / 1000).to_string() +
+  "Hz"
+}
+
+///|
+pub fn TimingCatalogEntry::pixel_count(self : TimingCatalogEntry) -> Int {
+  self.width * self.height
+}
+
+///|
+pub fn TimingCatalogEntry::is_high_refresh(self : TimingCatalogEntry) -> Bool {
+  self.refresh_millihz >= 120000
+}
+
+///|
 pub fn EdidError::make(
   code : DiagnosticCode,
   message : String,
@@ -447,22 +516,18 @@ pub fn DetailedTimingInfo::resolution(self : DetailedTimingInfo) -> String {
 }
 
 ///|
-pub fn DetailedTimingInfo::refresh_millihz(
-  self : DetailedTimingInfo,
-) -> Int {
+pub fn DetailedTimingInfo::refresh_millihz(self : DetailedTimingInfo) -> Int {
   let h_total = self.h_active + self.h_blanking
   let v_total = self.v_active + self.v_blanking
   if h_total <= 0 || v_total <= 0 {
     0
   } else {
-    (self.pixel_clock_khz * 1000 / h_total) * 1000 / v_total
+    self.pixel_clock_khz * 1000 / h_total * 1000 / v_total
   }
 }
 
 ///|
-pub fn DetailedTimingInfo::refresh_hz_rounded(
-  self : DetailedTimingInfo,
-) -> Int {
+pub fn DetailedTimingInfo::refresh_hz_rounded(self : DetailedTimingInfo) -> Int {
   (self.refresh_millihz() + 500) / 1000
 }
 

@@ -142,7 +142,10 @@ pub fn EdidAudit::diagnostics_by_severity(
 }
 
 ///|
-pub fn EdidAudit::has_diagnostic(self : EdidAudit, code : DiagnosticCode) -> Bool {
+pub fn EdidAudit::has_diagnostic(
+  self : EdidAudit,
+  code : DiagnosticCode,
+) -> Bool {
   for diagnostic in self.diagnostics {
     if diagnostic.code == code {
       return true
@@ -254,7 +257,10 @@ fn append_timing_diagnostics(out : Array[EdidDiagnostic], edid : Edid) -> Unit {
 }
 
 ///|
-fn append_descriptor_diagnostics(out : Array[EdidDiagnostic], edid : Edid) -> Unit {
+fn append_descriptor_diagnostics(
+  out : Array[EdidDiagnostic],
+  edid : Edid,
+) -> Unit {
   match edid.monitor_name() {
     Some(name) =>
       if name.is_empty() {
@@ -283,7 +289,7 @@ fn append_descriptor_diagnostics(out : Array[EdidDiagnostic], edid : Edid) -> Un
 fn append_range_diagnostics(out : Array[EdidDiagnostic], edid : Edid) -> Unit {
   for descriptor in edid.descriptors {
     match descriptor.range_limits {
-      Some(range) => {
+      Some(range) =>
         if range.min_vertical_hz > range.max_vertical_hz ||
           range.min_horizontal_khz > range.max_horizontal_khz {
           out.push(
@@ -295,7 +301,6 @@ fn append_range_diagnostics(out : Array[EdidDiagnostic], edid : Edid) -> Unit {
             ),
           )
         }
-      }
       None => ()
     }
   }

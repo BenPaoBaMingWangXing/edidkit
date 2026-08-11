@@ -406,7 +406,13 @@ fn parse_monitor_descriptor(
       range_limits: Some(parse_range_limits(data, offset)),
     }
   } else if tag == 0x00 {
-    { kind: Empty, index, text: None, detailed_timing: None, range_limits: None }
+    {
+      kind: Empty,
+      index,
+      text: None,
+      detailed_timing: None,
+      range_limits: None,
+    }
   } else {
     diagnostics.push(
       EdidDiagnostic::make(
@@ -433,7 +439,13 @@ fn text_descriptor(
   offset : Int,
   index : Int,
 ) -> Descriptor {
-  { kind, index, text: Some(descriptor_text(data, offset)), detailed_timing: None, range_limits: None }
+  {
+    kind,
+    index,
+    text: Some(descriptor_text(data, offset)),
+    detailed_timing: None,
+    range_limits: None,
+  }
 }
 
 ///|
@@ -450,11 +462,11 @@ fn parse_range_limits(data : Array[Int], offset : Int) -> RangeLimits {
 ///|
 fn parse_detailed_timing(data : Array[Int], offset : Int) -> DetailedTimingInfo {
   let h_active = byte_at(data, offset + 2) +
-    ((byte_at(data, offset + 4) >> 4) << 8)
+    (byte_at(data, offset + 4) >> 4 << 8)
   let h_blanking = byte_at(data, offset + 3) +
     ((byte_at(data, offset + 4) & 0x0F) << 8)
   let v_active = byte_at(data, offset + 5) +
-    ((byte_at(data, offset + 7) >> 4) << 8)
+    (byte_at(data, offset + 7) >> 4 << 8)
   let v_blanking = byte_at(data, offset + 6) +
     ((byte_at(data, offset + 7) & 0x0F) << 8)
   let h_sync_offset = byte_at(data, offset + 8) +
@@ -466,7 +478,7 @@ fn parse_detailed_timing(data : Array[Int], offset : Int) -> DetailedTimingInfo 
   let v_sync_pulse = (byte_at(data, offset + 10) & 0x0F) +
     ((byte_at(data, offset + 11) & 3) << 4)
   let h_size_mm = byte_at(data, offset + 12) +
-    ((byte_at(data, offset + 14) >> 4) << 8)
+    (byte_at(data, offset + 14) >> 4 << 8)
   let v_size_mm = byte_at(data, offset + 13) +
     ((byte_at(data, offset + 14) & 0x0F) << 8)
   let flags = byte_at(data, offset + 17)

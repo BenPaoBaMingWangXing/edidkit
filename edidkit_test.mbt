@@ -145,7 +145,8 @@ test "preferred and best mode choose detailed descriptor" {
 test "known timing table matches sample preferred mode" {
   let edid = must_parse_sample()
   match preferred_mode(edid) {
-    Some(mode) => @test.assert_eq(dmt_name_for_mode(mode), Some("DMT 1920x1080@60"))
+    Some(mode) =>
+      @test.assert_eq(dmt_name_for_mode(mode), Some("DMT 1920x1080@60"))
     None => fail("expected preferred mode")
   }
   @test.assert_eq(known_dmt_modes().length() >= 60, true)
@@ -191,11 +192,23 @@ test "report renderers include stable fields" {
   let edid = must_parse_sample()
   let audit = audit_edid(edid)
   inspect(edid_to_text(edid).contains("manufacturer: BNP"), content="true")
-  inspect(edid_to_text(edid).contains("preferred-mode: 1920x1080@60Hz"), content="true")
+  inspect(
+    edid_to_text(edid).contains("preferred-mode: 1920x1080@60Hz"),
+    content="true",
+  )
   inspect(audit_to_text(audit).contains("status: accepted"), content="true")
-  inspect(modes_to_markdown(modes_from_edid(edid)).contains("| 1920x1080@60Hz |"), content="true")
-  inspect(edid_to_json(edid).contains("\"identity\":\"BNP-4660\""), content="true")
-  inspect(audit_to_json(audit).contains("\"status\":\"accepted\""), content="true")
+  inspect(
+    modes_to_markdown(modes_from_edid(edid)).contains("| 1920x1080@60Hz |"),
+    content="true",
+  )
+  inspect(
+    edid_to_json(edid).contains("\"identity\":\"BNP-4660\""),
+    content="true",
+  )
+  inspect(
+    audit_to_json(audit).contains("\"status\":\"accepted\""),
+    content="true",
+  )
 }
 
 ///|
@@ -204,4 +217,84 @@ test "sample helpers parse and audit" {
   let audit = sample_audit()
   @test.assert_eq(edid.identity(), "BNP-4660")
   @test.assert_eq(audit.is_ok(), true)
+}
+
+///|
+test "timing catalog can find and match common modes" {
+  let edid = must_parse_sample()
+  @test.assert_eq(timing_catalog().length() >= 120, true)
+  @test.assert_eq(catalog_entries_by_family(DmtFamily).length() >= 50, true)
+  @test.assert_eq(catalog_entries_by_resolution(1920, 1080).length() >= 4, true)
+  match find_catalog_entry("dmt-1920x1080-60") {
+    Some(entry) => {
+      @test.assert_eq(entry.label(), "1920x1080@60Hz")
+      @test.assert_eq(entry.family.name(), "dmt")
+    }
+    None => fail("expected catalog entry")
+  }
+  match preferred_mode(edid) {
+    Some(mode) =>
+      match catalog_match_for_mode(mode) {
+        Some(entry) => @test.assert_eq(entry.id, "dmt-1920x1080-60")
+        None => fail("expected catalog match")
+      }
+    None => fail("expected preferred mode")
+  }
+}
+
+///|
+test "catalog reports matched modes for EDID" {
+  let edid = must_parse_sample()
+  let matches = catalog_matches_for_edid(edid)
+  inspect(matches.length() >= 4, content="true")
+  inspect(
+    catalog_summary_for_edid(edid).contains("dmt-1920x1080-60"),
+    content="true",
+  )
+  inspect(
+    catalog_to_markdown(matches).contains("| dmt-1920x1080-60 |"),
+    content="true",
+  )
+  @test.assert_eq(high_refresh_catalog_entries().length(), 0)
+  @test.assert_eq(highest_catalog_mode().width >= 3840, true)
+}
+
+///|
+test "profile matrix classifies common display targets" {
+  let edid = must_parse_sample()
+  let checks = profile_matrix(edid)
+  @test.assert_eq(checks.length(), standard_display_profiles().length())
+  inspect(
+    profile_matrix_to_text(checks).contains("full-hd-video"),
+    content="true",
+  )
+  inspect(
+    profile_matrix_to_markdown(checks).contains("| Profile | Status | Score |"),
+    content="true",
+  )
+  inspect(accepted_profiles(edid).length() >= 6, content="true")
+  inspect(rejected_profiles(edid).length() >= 3, content="true")
+}
+
+///|
+test "best profile match remains stable for bundled sample" {
+  let edid = must_parse_sample()
+  let best = best_profile_match(edid)
+  @test.assert_eq(best.profile_name, "legacy-xga")
+  @test.assert_eq(best.status.name(), "accepted")
+  @test.assert_eq(best.score, 1000)
+  @test.assert_eq(best.is_ok(), true)
+  @test.assert_eq(best.failed_requirements(), 0)
+}
+
+///|
+test "profile matrix exposes rejected requirements" {
+  let edid = must_parse_sample()
+  let large = check_profile(edid, DisplayProfile::large_format())
+  @test.assert_eq(large.status.name(), "rejected")
+  @test.assert_eq(large.minimum_mode_met, false)
+  @test.assert_eq(large.preferred_timing_met, true)
+  @test.assert_eq(large.interlaced_policy_met, true)
+  @test.assert_eq(large.extension_policy_met, true)
+  @test.assert_eq(large.failed_requirements(), 1)
 }

@@ -68,11 +68,7 @@ pub fn modes_by_resolution(
 }
 
 ///|
-pub fn supports_resolution(
-  edid : Edid,
-  width : Int,
-  height : Int,
-) -> Bool {
+pub fn supports_resolution(edid : Edid, width : Int, height : Int) -> Bool {
   !modes_by_resolution(edid, width, height).is_empty()
 }
 
@@ -197,7 +193,11 @@ fn mode_from_detailed(
     height: timing.v_active,
     refresh_millihz: timing.refresh_millihz(),
     pixel_clock_khz: Some(timing.pixel_clock_khz),
-    source: if preferred { PreferredDetailed } else { DetailedDescriptor },
+    source: if preferred {
+      PreferredDetailed
+    } else {
+      DetailedDescriptor
+    },
     interlaced: timing.interlaced,
     preferred,
     name: timing.resolution(),
@@ -244,7 +244,10 @@ fn unique_modes(modes : Array[DisplayMode]) -> Array[DisplayMode] {
 }
 
 ///|
-fn contains_similar_mode(modes : Array[DisplayMode], mode : DisplayMode) -> Bool {
+fn contains_similar_mode(
+  modes : Array[DisplayMode],
+  mode : DisplayMode,
+) -> Bool {
   for existing in modes {
     if existing.width == mode.width &&
       existing.height == mode.height &&
