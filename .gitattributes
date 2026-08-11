@@ -1,0 +1,4 @@
+*.mbt text eol=lf
+*.md text eol=lf
+moon.mod text eol=lf
+moon.pkg text eol=lf

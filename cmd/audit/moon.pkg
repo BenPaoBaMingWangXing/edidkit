@@ -1,0 +1,5 @@
+import {
+  "BenPaoBaMingWangXing/edidkit",
+}
+
+pkgtype(kind: "executable")

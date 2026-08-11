@@ -1,0 +1,23 @@
+name = "BenPaoBaMingWangXing/edidkit"
+
+version = "0.1.0"
+
+readme = "README.md"
+
+repository = "https://github.com/BenPaoBaMingWangXing/edidkit.git"
+
+license = "MIT"
+
+keywords = [
+  "edid",
+  "display",
+  "monitor",
+  "timing",
+  "hardware",
+  "validator",
+  "moonbit",
+]
+
+preferred_target = "wasm"
+
+description = "MoonBit EDID parser, checksum validator, display timing decoder, and monitor capability audit toolkit."
