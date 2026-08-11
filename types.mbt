@@ -64,6 +64,28 @@ pub(all) enum DescriptorKind {
 } derive(Eq, Debug)
 
 ///|
+/// Source used to derive a normalized display mode.
+pub(all) enum ModeSource {
+  PreferredDetailed
+  DetailedDescriptor
+  StandardTimingSource
+  EstablishedTimingSource
+  DmtDatabase
+  Inferred
+} derive(Eq, Debug)
+
+///|
+/// Human-oriented monitor class derived from size and preferred mode.
+pub(all) enum DisplayClass {
+  UnknownDisplay
+  EmbeddedPanel
+  DesktopMonitor
+  Television
+  Projector
+  LargeFormatDisplay
+} derive(Eq, Debug)
+
+///|
 /// Parse error returned when an EDID input cannot produce a base block.
 pub(all) struct EdidError {
   code : DiagnosticCode
@@ -176,6 +198,19 @@ pub(all) struct DetailedTimingInfo {
 } derive(Eq, Debug)
 
 ///|
+/// Normalized display mode from EDID timing sources or a known timing table.
+pub(all) struct DisplayMode {
+  width : Int
+  height : Int
+  refresh_millihz : Int
+  pixel_clock_khz : Int?
+  source : ModeSource
+  interlaced : Bool
+  preferred : Bool
+  name : String
+} derive(Eq, Debug)
+
+///|
 /// Range limits descriptor decoded from tag `0xFD`.
 pub(all) struct RangeLimits {
   min_vertical_hz : Int
@@ -227,6 +262,18 @@ pub(all) struct AuditSummary {
   detailed_timings : Int
   standard_timings : Int
   established_timings : Int
+} derive(Eq, Debug)
+
+///|
+/// Compatibility profile used by EDID audits.
+pub(all) struct DisplayProfile {
+  name : String
+  min_width : Int
+  min_height : Int
+  min_refresh_hz : Int
+  require_preferred_timing : Bool
+  allow_interlaced : Bool
+  max_extension_blocks : Int
 } derive(Eq, Debug)
 
 ///|
@@ -297,6 +344,30 @@ pub fn DescriptorKind::name(self : DescriptorKind) -> String {
     Text => "text"
     Empty => "empty"
     Unknown(tag) => "unknown-" + tag.to_string()
+  }
+}
+
+///|
+pub fn ModeSource::name(self : ModeSource) -> String {
+  match self {
+    PreferredDetailed => "preferred-detailed"
+    DetailedDescriptor => "detailed-descriptor"
+    StandardTimingSource => "standard-timing"
+    EstablishedTimingSource => "established-timing"
+    DmtDatabase => "dmt-database"
+    Inferred => "inferred"
+  }
+}
+
+///|
+pub fn DisplayClass::name(self : DisplayClass) -> String {
+  match self {
+    UnknownDisplay => "unknown"
+    EmbeddedPanel => "embedded-panel"
+    DesktopMonitor => "desktop-monitor"
+    Television => "television"
+    Projector => "projector"
+    LargeFormatDisplay => "large-format-display"
   }
 }
 
@@ -375,6 +446,41 @@ pub fn DetailedTimingInfo::refresh_hz_rounded(
 }
 
 ///|
+pub fn DisplayMode::refresh_hz_rounded(self : DisplayMode) -> Int {
+  (self.refresh_millihz + 500) / 1000
+}
+
+///|
+pub fn DisplayMode::resolution(self : DisplayMode) -> String {
+  self.width.to_string() + "x" + self.height.to_string()
+}
+
+///|
+pub fn DisplayMode::label(self : DisplayMode) -> String {
+  self.resolution() + "@" + self.refresh_hz_rounded().to_string() + "Hz"
+}
+
+///|
+pub fn DisplayMode::pixel_count(self : DisplayMode) -> Int {
+  self.width * self.height
+}
+
+///|
+pub fn DisplayMode::is_portrait(self : DisplayMode) -> Bool {
+  self.height > self.width
+}
+
+///|
+pub fn DisplayMode::is_4k_or_better(self : DisplayMode) -> Bool {
+  self.width >= 3840 && self.height >= 2160
+}
+
+///|
+pub fn DisplayMode::is_high_refresh(self : DisplayMode) -> Bool {
+  self.refresh_millihz >= 120000
+}
+
+///|
 pub fn Descriptor::is_detailed_timing(self : Descriptor) -> Bool {
   self.kind == DetailedTiming
 }
@@ -419,6 +525,42 @@ pub fn Edid::valid_standard_timing_count(self : Edid) -> Int {
     }
   }
   count
+}
+
+///|
+pub fn Edid::identity(self : Edid) -> String {
+  self.manufacturer.code + "-" + self.product_code.to_string()
+}
+
+///|
+pub fn Edid::version_text(self : Edid) -> String {
+  self.version_major.to_string() + "." + self.version_minor.to_string()
+}
+
+///|
+pub fn Edid::checksum_valid(self : Edid) -> Bool {
+  checksum_valid(self.bytes, 0)
+}
+
+///|
+pub fn Edid::display_class(self : Edid) -> DisplayClass {
+  if !self.display.has_physical_size() {
+    UnknownDisplay
+  } else if self.display.width_cm <= 36 && self.display.height_cm <= 24 {
+    EmbeddedPanel
+  } else if self.display.width_cm >= 100 || self.display.height_cm >= 60 {
+    LargeFormatDisplay
+  } else {
+    match self.preferred_timing() {
+      Some(timing) =>
+        if timing.h_active >= 3840 && timing.v_active >= 2160 {
+          Television
+        } else {
+          DesktopMonitor
+        }
+      None => DesktopMonitor
+    }
+  }
 }
 
 ///|

@@ -114,3 +114,41 @@ test "parse rejects short and bad header input" {
     Err(err) => @test.assert_eq(err.code.name(), "invalid-header")
   }
 }
+
+///|
+test "modes summarize detailed standard and established timings" {
+  let edid = must_parse_sample()
+  let modes = modes_from_edid(edid)
+  inspect(modes.length() >= 5, content="true")
+  @test.assert_eq(supports_resolution(edid, 1920, 1080), true)
+  @test.assert_eq(supports_mode(edid, 1280, 1024, 60), true)
+  @test.assert_eq(supports_mode(edid, 3840, 2160, 60), false)
+  @test.assert_eq(max_refresh_for_resolution(edid, 1920, 1080), Some(60))
+}
+
+///|
+test "preferred and best mode choose detailed descriptor" {
+  let edid = must_parse_sample()
+  match preferred_mode(edid) {
+    Some(mode) => {
+      @test.assert_eq(mode.label(), "1920x1080@60Hz")
+      @test.assert_eq(mode.source.name(), "preferred-detailed")
+      @test.assert_eq(mode.preferred, true)
+    }
+    None => fail("expected preferred mode")
+  }
+  match best_mode(edid) {
+    Some(mode) => @test.assert_eq(mode.resolution(), "1920x1080")
+    None => fail("expected best mode")
+  }
+}
+
+///|
+test "known timing table matches sample preferred mode" {
+  let edid = must_parse_sample()
+  match preferred_mode(edid) {
+    Some(mode) => @test.assert_eq(dmt_name_for_mode(mode), Some("DMT 1920x1080@60"))
+    None => fail("expected preferred mode")
+  }
+  @test.assert_eq(known_dmt_modes().length() >= 60, true)
+}
