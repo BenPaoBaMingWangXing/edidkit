@@ -8,10 +8,12 @@ Date: 2026-08-11
 moon check
 moon build
 moon test
+moon doc
 moon run cmd/main
 moon run cmd/audit
 moon package
 moon publish --dry-run
+moon publish
 ```
 
 ## Current Automated Tests
@@ -43,7 +45,11 @@ The test suite covers:
 - `moon check`: passed.
 - `moon build`: passed.
 - `moon test`: 20 passed, 0 failed.
+- `moon doc`: passed.
 - `moon run cmd/main`: passed.
 - `moon run cmd/audit`: passed.
 - `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.1.zip`.
 - `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.1`.
+- `moon publish`: Mooncakes server accepted version `0.1.1`.
+- GitHub Actions CI: passed for commit `7fa26d8`.
+- Mooncakes manifest: latest version `0.1.1`, build status `success`.

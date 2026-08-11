@@ -14,7 +14,7 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 - [x] 配置持续集成：`.github/workflows/ci.yml`。
 - [x] 提供可运行测试：`edidkit_test.mbt`。
 - [x] 项目能够正常构建：`moon check`、`moon build`、`moon test`。
-- [x] Mooncakes 发布 dry-run 已通过服务端校验。
+- [x] 已正式发布至 Mooncakes，latest version 为 `0.1.1`，`build_status=success`。
 - [x] 开发过程和提交记录可以追踪。
 - [x] 项目具有明确功能边界和后续维护价值。
 - [x] 第三方代码、素材和依赖符合开源许可证要求。
@@ -28,7 +28,7 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 - [x] 技术方案和设计说明：`docs/DESIGN.md`。
 - [x] Mooncakes 查重记录：`docs/MOONCAKES_CHECK.md`。
 - [x] 开发记录：`docs/DEVELOPMENT_LOG.md`。
-- [ ] GitHub Issue 或工单记录。
+- [x] GitHub Issue 或工单记录：`https://github.com/BenPaoBaMingWangXing/edidkit/issues`。
 - [ ] 合并请求记录。
 
 ## Current Validation Snapshot
@@ -36,8 +36,11 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 - MoonBit effective LOC: 4130 lines.
 - MoonBit total LOC: 4600 lines.
 - Tests: 20 passed, 0 failed.
+- Current version: 0.1.1.
 - License: MIT.
 - Project type: original MoonBit open-source library.
 - Migration status: not a port.
-
-The final GitHub and Mooncakes URLs should be verified after pushing and publishing.
+- GitHub repository: public and accessible.
+- GitHub Actions CI: success on commit `7fa26d8`.
+- Mooncakes latest version: `0.1.1`.
+- Mooncakes build status: `success`.
