@@ -23,6 +23,11 @@ pub(all) enum DiagnosticCode {
   NonSquarePhysicalSize
   UnusualGamma
   UnknownDescriptor
+  MissingMonitorName
+  InvalidDisplaySize
+  ProfileRequirementNotMet
+  InterlacedModeUnsupported
+  RangeLimitInconsistent
 } derive(Eq, Debug)
 
 ///|
@@ -277,6 +282,17 @@ pub(all) struct DisplayProfile {
 } derive(Eq, Debug)
 
 ///|
+/// Complete audit result for one EDID block.
+pub(all) struct EdidAudit {
+  status : AuditStatus
+  profile_name : String
+  diagnostics : Array[EdidDiagnostic]
+  summary : AuditSummary
+  preferred_mode : DisplayMode?
+  display_class : DisplayClass
+} derive(Eq, Debug)
+
+///|
 pub fn Severity::name(self : Severity) -> String {
   match self {
     Note => "note"
@@ -302,6 +318,11 @@ pub fn DiagnosticCode::name(self : DiagnosticCode) -> String {
     NonSquarePhysicalSize => "non-square-physical-size"
     UnusualGamma => "unusual-gamma"
     UnknownDescriptor => "unknown-descriptor"
+    MissingMonitorName => "missing-monitor-name"
+    InvalidDisplaySize => "invalid-display-size"
+    ProfileRequirementNotMet => "profile-requirement-not-met"
+    InterlacedModeUnsupported => "interlaced-mode-unsupported"
+    RangeLimitInconsistent => "range-limit-inconsistent"
   }
 }
 

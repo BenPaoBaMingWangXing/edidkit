@@ -16,6 +16,11 @@ fn sample_hex() -> String {
 }
 
 ///|
+fn sample_bad_checksum_hex() -> String {
+  sample_hex()[0:sample_hex().length() - 2].to_owned() + "D4"
+}
+
+///|
 fn must_parse_sample() -> Edid raise {
   match parse_edid_hex(sample_hex()) {
     Ok(value) => value
@@ -151,4 +156,39 @@ test "known timing table matches sample preferred mode" {
     None => fail("expected preferred mode")
   }
   @test.assert_eq(known_dmt_modes().length() >= 60, true)
+}
+
+///|
+test "baseline and desktop audits accept sample EDID" {
+  let edid = must_parse_sample()
+  let baseline = audit_edid(edid)
+  @test.assert_eq(baseline.status.name(), "accepted")
+  @test.assert_eq(baseline.profile_name, "baseline")
+  @test.assert_eq(baseline.summary.errors, 0)
+  @test.assert_eq(baseline.display_class.name(), "desktop-monitor")
+  let desktop = audit_edid_with_profile(edid, DisplayProfile::desktop())
+  @test.assert_eq(desktop.is_ok(), true)
+  @test.assert_eq(desktop.has_warnings(), false)
+}
+
+///|
+test "large format audit rejects sample EDID" {
+  let edid = must_parse_sample()
+  let audit = audit_edid_with_profile(edid, DisplayProfile::large_format())
+  @test.assert_eq(audit.status.name(), "rejected")
+  @test.assert_eq(audit.has_errors(), true)
+  @test.assert_eq(audit.has_diagnostic(ProfileRequirementNotMet), true)
+  @test.assert_eq(audit.diagnostics_by_severity(Error).length(), 1)
+}
+
+///|
+test "bad checksum produces audit error" {
+  match parse_edid_hex(sample_bad_checksum_hex()) {
+    Ok(edid) => {
+      let audit = audit_edid(edid)
+      @test.assert_eq(audit.status.name(), "rejected")
+      @test.assert_eq(audit.has_diagnostic(InvalidChecksum), true)
+    }
+    Err(err) => fail(err.message)
+  }
 }
