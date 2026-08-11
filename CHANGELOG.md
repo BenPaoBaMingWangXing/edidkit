@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 - 2026-08-11
+
+### Changed
+
+- Added `moon.mod.json` metadata alongside `moon.mod` so Mooncakes documentation generation can read module metadata.
+- Kept the public API and behavior unchanged from `0.1.0`.
+
 ## 0.1.0 - 2026-08-11
 
 Initial public release candidate.

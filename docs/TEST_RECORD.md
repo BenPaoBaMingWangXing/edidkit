@@ -45,5 +45,5 @@ The test suite covers:
 - `moon test`: 20 passed, 0 failed.
 - `moon run cmd/main`: passed.
 - `moon run cmd/audit`: passed.
-- `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.0.zip`.
-- `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.0`.
+- `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.1.zip`.
+- `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.1`.

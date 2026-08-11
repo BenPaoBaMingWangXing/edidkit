@@ -17,7 +17,7 @@
 
 ## Release Preparation
 
-- Version: `0.1.0`.
+- Version: `0.1.1`.
 - Package: `BenPaoBaMingWangXing/edidkit`.
 - Repository: `https://github.com/BenPaoBaMingWangXing/edidkit`.
 - Mooncakes docs page: `https://mooncakes.io/docs/BenPaoBaMingWangXing/edidkit`.

@@ -105,7 +105,7 @@ Implemented:
 - Display mode normalization and timing catalog matching.
 - Profile-based audit and report generation.
 
-Not implemented in version `0.1.0`:
+Not implemented in version `0.1.1`:
 
 - CTA-861 extension block parsing.
 - DisplayID block parsing.
