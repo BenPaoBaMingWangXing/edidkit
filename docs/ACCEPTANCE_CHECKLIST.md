@@ -6,7 +6,7 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 
 - [x] 以 MoonBit 作为主要实现语言。
 - [x] 核心功能使用 MoonBit 实现。
-- [x] 代码仓库计划公开发布：`https://github.com/BenPaoBaMingWangXing/edidkit`。
+- [x] 代码仓库已公开发布：`https://github.com/BenPaoBaMingWangXing/edidkit`。
 - [x] Mooncakes 包名：`BenPaoBaMingWangXing/edidkit`。
 - [x] 提供清晰 README。
 - [x] README 说明项目用途、主要功能、使用方法、边界和许可证。
@@ -29,7 +29,7 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 - [x] Mooncakes 查重记录：`docs/MOONCAKES_CHECK.md`。
 - [x] 开发记录：`docs/DEVELOPMENT_LOG.md`。
 - [x] GitHub Issue 或工单记录：`https://github.com/BenPaoBaMingWangXing/edidkit/issues`。
-- [ ] 合并请求记录。
+- [x] 合并请求记录说明：单人维护项目未使用合并请求，开发过程通过 Git 提交、Issue 或工单记录、测试记录和变更日志追踪。
 
 ## Current Validation Snapshot
 
@@ -41,6 +41,7 @@ This checklist is prepared for the 2026 MoonBit 8月黑客松验收标准.
 - Project type: original MoonBit open-source library.
 - Migration status: not a port.
 - GitHub repository: public and accessible.
-- GitHub Actions CI: success on commit `7fa26d8`.
+- GitHub Actions CI: configured at `.github/workflows/ci.yml`; latest checked remote run passed on default branch `main`.
+- Strict checks: `moon check --deny-warn`, `moon test --deny-warn`, `moon fmt --check`, and `moon info` passed.
 - Mooncakes latest version: `0.1.1`.
 - Mooncakes build status: `success`.

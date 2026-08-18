@@ -14,7 +14,7 @@
 - Added self-contained synthetic EDID sample.
 - Added tests for parser, mode extraction, audit, reports, catalog, and profile matrix.
 - Expanded documentation for API, design, testing, acceptance, and Mooncakes collision checks.
-- Published public GitHub repository and created issue records for validation and future roadmap.
+- Published public GitHub repository and created issue records for validation and maintenance tracking.
 - Published Mooncakes version `0.1.1` and verified remote build success.
 
 ## Release Preparation

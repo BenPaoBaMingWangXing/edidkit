@@ -28,7 +28,7 @@ EDID is the data block that a monitor, embedded panel, projector, capture device
 
 ## Install
 
-After the package is published on Mooncakes:
+Install from Mooncakes:
 
 ```bash
 moon add BenPaoBaMingWangXing/edidkit
@@ -129,7 +129,6 @@ The project is released under the MIT License. The source code is written for th
 
 ## Hackathon Materials
 
-- Project proposal: `PROJECT_PROPOSAL.md`
 - API documentation: `docs/API.md`
 - Design notes: `docs/DESIGN.md`
 - Acceptance checklist: `docs/ACCEPTANCE_CHECKLIST.md`

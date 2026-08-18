@@ -1,10 +1,17 @@
 # Changelog
 
+## Acceptance Finalization - 2026-08-18
+
+### Changed
+
+- Updated submission, validation, and Mooncakes collision-check materials to completed acceptance status.
+- Retained compatibility metadata for Mooncakes documentation generation while keeping `moon.mod` as the primary package metadata file.
+
 ## 0.1.1 - 2026-08-11
 
 ### Changed
 
-- Added `moon.mod.json` metadata alongside `moon.mod` so Mooncakes documentation generation can read module metadata.
+- Added package metadata so Mooncakes documentation generation can read module information.
 - Kept the public API and behavior unchanged from `0.1.0`.
 
 ## 0.1.0 - 2026-08-11

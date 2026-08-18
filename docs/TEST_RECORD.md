@@ -1,6 +1,6 @@
 # Test Record
 
-Date: 2026-08-11
+Date: 2026-08-18
 
 ## Commands
 
@@ -12,9 +12,22 @@ moon doc
 moon run cmd/main
 moon run cmd/audit
 moon package
+moon check --deny-warn
+moon test --deny-warn
+moon fmt --check
+moon info
+```
+
+Mooncakes release commands completed on 2026-08-11 for version `0.1.1`:
+
+```bash
 moon publish --dry-run
 moon publish
 ```
+
+## Tooling Note
+
+The repository keeps both `moon.mod` and `moon.mod.json` because the current documentation generator reads the JSON metadata file. MoonBit emits a compatibility notice for the dual metadata files, but the checked commands exit successfully.
 
 ## Current Automated Tests
 
@@ -49,7 +62,11 @@ The test suite covers:
 - `moon run cmd/main`: passed.
 - `moon run cmd/audit`: passed.
 - `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.1.zip`.
+- `moon check --deny-warn`: passed.
+- `moon test --deny-warn`: 20 passed, 0 failed.
+- `moon fmt --check`: passed.
+- `moon info`: passed.
 - `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.1`.
 - `moon publish`: Mooncakes server accepted version `0.1.1`.
-- GitHub Actions CI: passed for commit `7fa26d8`.
+- GitHub Actions CI: workflow configured and latest checked remote run passed on default branch `main`.
 - Mooncakes manifest: latest version `0.1.1`, build status `success`.
