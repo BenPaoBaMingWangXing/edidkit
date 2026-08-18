@@ -30,8 +30,8 @@ No Mooncakes package with the same EDID/DisplayID/monitor capability parsing bou
 
 The 2026-08-18 module-list check returned:
 
-- `edid`: 1 hit, `BenPaoBaMingWangXing/edidkit@0.1.1`.
-- `display timing`: 1 hit, `BenPaoBaMingWangXing/edidkit@0.1.1`.
+- `edid`: 1 hit, `BenPaoBaMingWangXing/edidkit@0.1.2`.
+- `display timing`: 1 hit, `BenPaoBaMingWangXing/edidkit@0.1.2`.
 - `displayid`, `display id`, `monitor identification`, `monitor timing`, `vesa`, `dmt`: 0 hits.
 - `cta`: 4 unrelated hits.
 

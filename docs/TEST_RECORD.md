@@ -18,7 +18,7 @@ moon fmt --check
 moon info
 ```
 
-Mooncakes release commands completed on 2026-08-11 for version `0.1.1`:
+Mooncakes release commands completed on 2026-08-18 for version `0.1.2`:
 
 ```bash
 moon publish --dry-run
@@ -61,12 +61,12 @@ The test suite covers:
 - `moon doc`: passed.
 - `moon run cmd/main`: passed.
 - `moon run cmd/audit`: passed.
-- `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.1.zip`.
+- `moon package`: passed and produced `BenPaoBaMingWangXing-edidkit-0.1.2.zip`.
 - `moon check --deny-warn`: passed.
 - `moon test --deny-warn`: 20 passed, 0 failed.
 - `moon fmt --check`: passed.
 - `moon info`: passed.
-- `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.1`.
-- `moon publish`: Mooncakes server accepted version `0.1.1`.
+- `moon publish --dry-run`: Mooncakes server accepted the dry run for `BenPaoBaMingWangXing/edidkit` version `0.1.2`.
+- `moon publish`: Mooncakes server accepted version `0.1.2`.
 - GitHub Actions CI: workflow configured and latest checked remote run passed on default branch `main`.
-- Mooncakes manifest: latest version `0.1.1`, build status `success`.
+- Mooncakes manifest: latest version `0.1.2`, build status `success`.

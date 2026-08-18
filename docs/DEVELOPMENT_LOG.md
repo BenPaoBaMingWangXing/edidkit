@@ -1,5 +1,12 @@
 # Development Log
 
+## 2026-08-18
+
+- Completed the final acceptance review against the August Hackathon checklist.
+- Re-ran local check, build, test, documentation, examples, package, formatting, and interface checks.
+- Rechecked all 1,974 entries returned by the Mooncakes public module API for overlapping EDID and display-timing packages.
+- Published documentation synchronization release `0.1.2`.
+
 ## 2026-08-11
 
 - Initialized `BenPaoBaMingWangXing/edidkit` as an original MoonBit package.
@@ -19,7 +26,7 @@
 
 ## Release Preparation
 
-- Version: `0.1.1`.
+- Version: `0.1.2`.
 - Package: `BenPaoBaMingWangXing/edidkit`.
 - Repository: `https://github.com/BenPaoBaMingWangXing/edidkit`.
 - Mooncakes docs page: `https://mooncakes.io/docs/BenPaoBaMingWangXing/edidkit`.

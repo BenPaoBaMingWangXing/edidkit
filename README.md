@@ -105,7 +105,7 @@ Implemented:
 - Display mode normalization and timing catalog matching.
 - Profile-based audit and report generation.
 
-Not implemented in version `0.1.1`:
+Outside the version `0.1.2` boundary:
 
 - CTA-861 extension block parsing.
 - DisplayID block parsing.
@@ -115,7 +115,7 @@ Not implemented in version `0.1.1`:
 
 ## Mooncakes Collision Check
 
-On 2026-08-11, Mooncakes public module data and web search were checked for EDID, DisplayID, VESA, DMT, CTA, monitor identification, and display timing packages. No existing Mooncakes package with the same project boundary was found. Nearby keyword matches were unrelated categories such as text layout, regular expression, dotenv, noise generation, or generic scheduling.
+On 2026-08-18, all 1,974 entries returned by the Mooncakes public module API were checked for EDID, DisplayID, VESA, DMT, CTA, monitor identification, monitor timing, and display timing. No existing Mooncakes package with the same project boundary was found. Nearby keyword matches were unrelated categories such as text layout, regular expression, dotenv, or noise generation.
 
 The detailed check record is in `docs/MOONCAKES_CHECK.md`.
 

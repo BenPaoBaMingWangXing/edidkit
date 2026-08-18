@@ -1,10 +1,11 @@
 # Changelog
 
-## Acceptance Finalization - 2026-08-18
+## 0.1.2 - 2026-08-18
 
 ### Changed
 
 - Updated submission, validation, and Mooncakes collision-check materials to completed acceptance status.
+- Synchronized the published README with the final public repository and removed the obsolete repository-local proposal link.
 - Retained compatibility metadata for Mooncakes documentation generation while keeping `moon.mod` as the primary package metadata file.
 
 ## 0.1.1 - 2026-08-11
